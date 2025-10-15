@@ -4,30 +4,32 @@ public abstract class EntityState
 {
     protected Player player;
     protected StateMachine stateMachine;
-    protected string stateName;
+    protected string animBoolName;
 
-    public EntityState(Player player, StateMachine stateMachine, string stateName)
+    protected Animator anim;
+
+    public EntityState(Player player, StateMachine stateMachine, string animBoolName)
     {
         this.player = player;
         this.stateMachine = stateMachine;
-        this.stateName = stateName;
+        this.animBoolName = animBoolName;
+        
+        anim = player.anim;
     }
 
     public virtual void Enter() 
     {
-        // Enter will be called every time we enter a state
-        Debug.Log("Entering state: " + stateName);
+        anim.SetBool(animBoolName, true);
     }
 
     public virtual void Update()
     {
         // Update will run the logic of the state
-        Debug.Log("Updating state: " + stateName);
+        Debug.Log("Updating state: " + animBoolName);
     }
 
     public virtual void Exit() 
     {
-        // Exit will be called every time we exit a state
-        Debug.Log("Exiting state: " + stateName);
+        anim.SetBool(animBoolName, false);
     }
 }
