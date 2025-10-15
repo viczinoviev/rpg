@@ -8,15 +8,18 @@ public class Player : MonoBehaviour
 
     public Rigidbody2D rb { get; private set; }
 
-    private PlayerInputSet input;
+    public PlayerInputSet input { get; private set; }
     private StateMachine stateMachine;
 
     public Player_IdleState IdleState { get; private set; }
     public Player_MoveState MoveState { get; private set; }
-    public Vector2 moveInput { get; private set; }
+    public Player_JumpState JumpState { get; private set; }
+    public Player_FallState FallState { get; private set; }
 
     [Header("Movement Details")]
     public float moveSpeed;
+    public float jumpForce = 5;
+    public Vector2 moveInput { get; private set; }
 
     private bool isFacingRight = true;
 
@@ -32,6 +35,8 @@ public class Player : MonoBehaviour
 
         IdleState = new Player_IdleState(this, stateMachine, "idle");
         MoveState = new Player_MoveState(this, stateMachine, "move");
+        JumpState = new Player_JumpState(this, stateMachine, "jumpFall");
+        FallState = new Player_FallState(this, stateMachine, "jumpFall");
     }
 
     private void OnEnable()
@@ -55,6 +60,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         stateMachine.UpdateActiveState();
+        anim.SetFloat("yVelocity", rb.linearVelocity.y);
     }
 
     public void SetVelocity(float xVelocity, float yVelocity)
