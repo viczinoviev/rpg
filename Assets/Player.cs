@@ -1,21 +1,30 @@
+using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class Player : MonoBehaviour
 {
     public Animator anim { get; private set; }
 
+    public Rigidbody2D rb { get; private set; }
 
     private PlayerInputSet input;
     private StateMachine stateMachine;
 
     public Player_IdleState IdleState { get; private set; }
     public Player_MoveState MoveState { get; private set; }
-
     public Vector2 moveInput { get; private set; }
+
+    [Header("Movement Details")]
+    public float moveSpeed;
+
+
 
     private void Awake()
     {
         anim = GetComponentInChildren<Animator>();
+
+        rb = GetComponent<Rigidbody2D>();
 
         input = new PlayerInputSet();
 
@@ -46,5 +55,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         stateMachine.UpdateActiveState();
+    }
+
+    public void SetVelocity(float xVelocity, float yVelocity)
+    {
+        rb.linearVelocity = new Vector2(xVelocity, yVelocity);
     }
 }
